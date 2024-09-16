@@ -37,6 +37,16 @@ jobs:
           # echo "::set-output name=acr_username::$(terraform output -raw acr_username)"
           # echo "::set-output name=acr_password::$(terraform output -raw acr_password)"
 
+      - run: terraform output -raw acr_login_server
+        working-directory: ./scripts/terraform
+
+      - name: checking the coommand
+        run: |
+          terraform output -raw acr_login_server
+          terraform output -raw acr_username
+          terraform output -raw acr_password
+        working-directory: ./scripts/terraform
+
       - name: Retrieve Registry Info from Terraform Outputs
         id: tf
         working-directory: ./scripts/terraform
