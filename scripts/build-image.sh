@@ -18,5 +18,5 @@ set -u # or set -o nounset
 # docker build -t $CONTAINER_REGISTRY/book-catalog:$VERSION --file ./Dockerfile-prod .
 
 # docker build -t $CONTAINER_REGISTRY/inventory-management:$VERSION --file ./Dockerfile-prod .
-
+docker-compose --version
 docker-compose up -d --build

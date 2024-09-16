@@ -41,6 +41,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Install docker-compose
+        uses: KengoTODA/actions-setup-docker-compose@v1
+        with:
+          version: '2.14.2'
+
       - name: Build
         env:
           CONTAINER_REGISTRY: ${{ steps.terraform.outputs.acr_server }}
