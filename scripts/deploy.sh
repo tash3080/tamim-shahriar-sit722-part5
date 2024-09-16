@@ -14,8 +14,6 @@
 #
 
 set -u # or set -o nounset
-: "$CONTAINER_REGISTRY"
-: "$VERSION"
 : "$AZURE_RG"
 : "$AZURE_AKS"
 
