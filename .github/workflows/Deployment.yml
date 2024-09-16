@@ -11,6 +11,8 @@ jobs:
       TF_VERSION: '1.0.0'  # Specify Terraform version
       AZURE_RG: "tamimshahriarsit722part5"
       AZURE_AKS: "tamimshahriarsit722part5"
+      ACR_NAME: "tamimshahriarsit722part5"
+
 
     steps:
       - uses: actions/checkout@v3
@@ -54,13 +56,13 @@ jobs:
           terraform output -raw acr_password | awk -F '::' '{print $1}'
         working-directory: ./scripts/terraform
 
-      - name: Retrieve Registry Info from Terraform Outputs
-        id: tf
-        working-directory: ./scripts/terraform
-        run: |
-          echo "ACR_NAME=$(terraform output -raw acr_login_server | awk -F '::' '{print $1}')" >> $GITHUB_OUTPUT
-          echo "ACR_UN=$(terraform output -raw acr_username | awk -F '::' '{print $1}')" >> $GITHUB_OUTPUT
-          echo "ACR_PW=$(terraform output -raw acr_password | awk -F '::' '{print $1}')" >> $GITHUB_OUTPUT
+      # - name: Retrieve Registry Info from Terraform Outputs
+      #   id: tf
+      #   working-directory: ./scripts/terraform
+      #   run: |
+      #     echo "ACR_NAME=$(terraform output -raw acr_login_server | awk -F '::' '{print $1}')" >> $GITHUB_ENV
+      #     echo "ACR_UN=$(terraform output -raw acr_username | awk -F '::' '{print $1}')" >> $GITHUB_ENV
+      #     echo "ACR_PW=$(terraform output -raw acr_password | awk -F '::' '{print $1}')" >> $GITHUB_ENV
              
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -73,11 +75,10 @@ jobs:
       - name: Build
         run: ./scripts/build-image.sh
 
+      - run: terraform output -raw acr_password | awk -F '::' '{print $1}' | docker login $ACR_NAME.azurecr.io --username $ACR_NAME --password-stdin
+        working-directory: ./scripts/terraform
+
       - name: Publish
-        env:
-          CONTAINER_REGISTRY: ${{steps.tf.outputs.ACR_NAME}}
-          REGISTRY_UN: ${{steps.tf.outputs.ACR_UN}}
-          REGISTRY_PW: ${{steps.tf.outputs.ACR_PW}}
         run: ./scripts/push-image.sh
 
       - uses: tale/kubectl-action@v1
@@ -86,3 +87,11 @@ jobs:
     
       - name: Deploy
         run: ./scripts/deploy.sh
+
+      - name: Retrieve Registry Info from Terraform Outputs
+        id: tf
+        working-directory: ./scripts/terraform
+        run: |
+          echo "ACR_NAME=$(terraform output -raw acr_login_server | awk -F '::' '{print $1}')" >> $GITHUB_ENV
+          echo "ACR_UN=$(terraform output -raw acr_username | awk -F '::' '{print $1}')" >> $GITHUB_ENV
+          echo "ACR_PW=$(terraform output -raw acr_password | awk -F '::' '{print $1}')" >> $GITHUB_ENV

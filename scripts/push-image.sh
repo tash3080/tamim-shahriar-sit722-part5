@@ -14,25 +14,25 @@
 #
 
 set -u # or set -o nounset
-: "$CONTAINER_REGISTRY"
+: "$ACR_NAME"
 : "$VERSION"
-: "$REGISTRY_UN"
-: "$REGISTRY_PW"
+# : "$REGISTRY_UN"
+# : "$REGISTRY_PW"
 
-echo $CONTAINER_REGISTRY
+# echo $CONTAINER_REGISTRY
 
-echo $VERSION
+# echo $VERSION
 
-echo $REGISTRY_UN
+# echo $REGISTRY_UN
 
-echo $REGISTRY_PW
+# echo $REGISTRY_PW
 
-echo $REGISTRY_PW | docker login $CONTAINER_REGISTRY --username $REGISTRY_UN --password-stdin
+# echo $REGISTRY_PW | docker login $CONTAINER_REGISTRY --username $REGISTRY_UN --password-stdin
 
-docker tag book-catalog:latest $CONTAINER_REGISTRY/book-catalog:$VERSION
+docker tag book-catalog:latest $ACR_NAME.azurecr.io/book-catalog:$VERSION
 
-docker tag inventory-management:latest $CONTAINER_REGISTRY/inventory-management:$VERSION
+docker tag inventory-management:latest $ACR_NAME.azurecr.io/inventory-management:$VERSION
 
-docker push $CONTAINER_REGISTRY/book-catalog:$VERSION
+docker push $ACR_NAME.azurecr.io/book-catalog:$VERSION
 
-docker push $CONTAINER_REGISTRY/inventory-management:$VERSION
+docker push $ACR_NAME.azurecr.io/inventory-management:$VERSION
