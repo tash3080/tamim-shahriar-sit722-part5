@@ -11,9 +11,9 @@
 #       ./scripts/build-image.sh
 #
 
-set -u # or set -o nounset
-: "$CONTAINER_REGISTRY"
-: "$VERSION"
+# set -u # or set -o nounset
+# : "$CONTAINER_REGISTRY"
+# : "$VERSION"
 
 # docker build -t $CONTAINER_REGISTRY/book-catalog:$VERSION --file ./Dockerfile-prod .
 
