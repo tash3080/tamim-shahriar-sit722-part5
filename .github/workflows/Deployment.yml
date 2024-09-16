@@ -37,7 +37,15 @@ jobs:
           echo "::set-output name=acr_server::$(terraform output -raw acr_login_server)"
           echo "::set-output name=acr_username::$(terraform output -raw acr_username)"
           echo "::set-output name=acr_password::$(terraform output -raw acr_password)"
-  
+
+      - name: Retrieve Registry Info from Terraform Outputs
+        working-directory: ./scripts/terraform
+        run: |
+          echo "CONTAINER_REGISTRY=$(terraform output -raw acr_login_server)" >> $GITHUB_ENV
+          echo "REGISTRY_UN=$(terraform output -raw acr_username)" >> $GITHUB_ENV
+          echo "REGISTRY_PW=$(terraform output -raw acr_password)" >> $GITHUB_ENV
+             
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -47,15 +55,9 @@ jobs:
           version: '2.14.2'
 
       - name: Build
-        env:
-          CONTAINER_REGISTRY: ${{ steps.terraform.outputs.acr_server }}
         run: ./scripts/build-image.sh
 
       - name: Publish
-        env:
-          CONTAINER_REGISTRY: ${{ steps.terraform.outputs.acr_server }}
-          REGISTRY_UN: ${{ steps.terraform.outputs.acr_username }}
-          REGISTRY_PW: ${{ steps.terraform.outputs.acr_password }}
         run: ./scripts/push-image.sh
 
       - uses: tale/kubectl-action@v1
