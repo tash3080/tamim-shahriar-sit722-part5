@@ -32,11 +32,10 @@ jobs:
       - name: Terraform Apply
         id: terraform
         working-directory: ./scripts/terraform
-        run: |
-          terraform apply -auto-approve
-          echo "::set-output name=acr_server::$(terraform output -raw acr_login_server)"
-          echo "::set-output name=acr_username::$(terraform output -raw acr_username)"
-          echo "::set-output name=acr_password::$(terraform output -raw acr_password)"
+        run: terraform apply -auto-approve
+          # echo "::set-output name=acr_server::$(terraform output -raw acr_login_server)"
+          # echo "::set-output name=acr_username::$(terraform output -raw acr_username)"
+          # echo "::set-output name=acr_password::$(terraform output -raw acr_password)"
 
       - name: Retrieve Registry Info from Terraform Outputs
         id: tf
