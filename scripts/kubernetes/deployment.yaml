@@ -19,9 +19,7 @@ spec:
         image: tamimshahriarsit722part5.azurecr.io/book-catalog:$VERSION
         ports:
         - containerPort: 8000
-        # env:
-        # - name: DATABASE_URL
-        #   value: <your-database-url-for-book-catalog>
+        
 ---
 apiVersion: v1
 kind: Service
@@ -56,9 +54,7 @@ spec:
         image: tamimshahriarsit722part5.azurecr.io/inventory-management:$VERSION
         ports:
         - containerPort: 8000
-        # env:
-        # - name: DATABASE_URL
-        #   value: <your-database-url-for-inventory-management>
+        
 ---
 apiVersion: v1
 kind: Service
