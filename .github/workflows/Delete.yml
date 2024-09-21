@@ -20,9 +20,10 @@ jobs:
 
       - uses: tale/kubectl-action@v1
         with:
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
           kubectl-version: v1.24.2
       
-      - name: Delete
+      - name: Delete deployment
         run: ./scripts/delete.sh
 
       - name: Setup Terraform
