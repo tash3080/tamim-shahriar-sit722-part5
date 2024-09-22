@@ -7,6 +7,7 @@ jobs:
   delete:
     runs-on: ubuntu-latest 
     env:
+      VERSION: ${{ github.sha }}
       AZURE_RG: "tamimshahriarsit722part5"
       AZURE_AKS: "tamimshahriarsit722part5"
 
@@ -25,17 +26,3 @@ jobs:
       
       - name: Delete deployment
         run: ./scripts/delete.sh
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Terraform Init
-        working-directory: ./scripts/terraform
-        run: terraform init
-
-      - name: Terraform Delete
-        id: terraform
-        working-directory: ./scripts/terraform
-        run: terraform destroy -auto-approve
